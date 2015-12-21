@@ -12,7 +12,7 @@ class PageController extends Controller
     /**
      * Get rankings page
      *
-     * @return Response
+     * @return JSON of top 10 characters
      */
     public function getRankings()
     {
@@ -23,12 +23,17 @@ class PageController extends Controller
     /**
     * Get the news page
     *
-    * @return Response
+    * @return JSON of all articles
     */
     public function getNewsArchive() {
         return \App\News::all();
     }
 
+    /**
+    * Get a specific news article
+    * @param id
+    * @return JSON article
+    */
     public function getNewsArticle(Request $request) {
         try {
             $article = \App\News::findOrFail($request->route('id'));
@@ -40,6 +45,6 @@ class PageController extends Controller
     }
 
     public function submitVote(Request $request) {
-        
+
     }
 }

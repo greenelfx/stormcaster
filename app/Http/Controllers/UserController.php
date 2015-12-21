@@ -48,6 +48,13 @@ class UserController extends Controller
         	return array('success', 'true');
         }
     }
+
+    /**
+     * Authenticate a user
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function authenticate(Request $request)
     {
         // grab credentials from the request
@@ -71,11 +78,24 @@ class UserController extends Controller
             return response()->json(['error' => 'invalid_credentials'], 401);
         }
     }
+
+    /**
+     * Disconnect a game account
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function disconnectAccount(Request $request) {
         $user = User::find(Auth::user()->id);
         $user->loggedin = 0;
         return "true";
     }
+
+    /**
+     * Get ID and titles of all news articles
+     *
+     * @return Response
+     */
     public function getEditableNews(Request $request) {
         $user = User::find(Auth::user()->id);
         if($user->webadmin == 1) {
@@ -86,6 +106,13 @@ class UserController extends Controller
             return response()->json(['error' => 'invalid_credentials'], 401);
         }
     }
+
+    /**
+     * Update a news article
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function editNews(Request $request) {
         $user = User::find(Auth::user()->id);
         if($user->webadmin == 1) {
@@ -115,6 +142,13 @@ class UserController extends Controller
            return response()->json(['error' => 'invalid_credentials'], 401);
         }
     }
+
+    /**
+     * Delete a news article
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function deleteNews(Request $request) {
         $user = User::find(Auth::user()->id);
         if($user->webadmin == 1) {
@@ -130,5 +164,38 @@ class UserController extends Controller
         else {
            return response()->json(['error' => 'invalid_credentials'], 401);
         }
+    }
+
+    /**
+     * Create a news article
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function createNews(Request $request) {
+        $user = User::find(Auth::user()->id);
+        if($user->webadmin == 1) {
+            $validator = Validator::make($request->all(), [
+                'title' => 'required|string',
+                'type'   => 'required|string',
+                'content' => 'required'
+            ]);
+            if ($validator->fails()) {
+                return $validator->errors()->all();
+            }
+            else {
+                $article = new \App\News;
+                $article->author = Auth::user()->name;
+                $article->date = time();
+                $article->title = $request->input('title');
+                $article->type = $request->input('type');
+                $article->content = $request->input('content');
+                $article->save();
+                return response()->json(['success' => 'success'], 200);
+            }           
+        }
+        else {
+           return response()->json(['error' => 'invalid_credentials'], 401);
+        }        
     }
 }
