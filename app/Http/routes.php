@@ -22,6 +22,7 @@ Route::post('api/user/auth', 'UserController@authenticate');
 Route::post('api/user/news/edit', 'UserController@editNews');
 Route::post('api/user/news/delete', 'UserController@deleteNews');
 Route::post('api/user/news', 'UserController@createNews');
+Route::post('api/user/vote', 'UserController@submitVote');
 
 /*
 * PageController Routes

@@ -43,8 +43,4 @@ class PageController extends Controller
             return response()->json(['error' => 'invalid_id'], 401);
         }
     }
-
-    public function submitVote(Request $request) {
-
-    }
 }

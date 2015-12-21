@@ -18,7 +18,7 @@ class UserController extends Controller
        // Apply the jwt.auth middleware to all methods in this controller
        // except for the authenticate method. We don't want to prevent
        // the user from retrieving their token if they don't already have it
-       $this->middleware('jwt.auth', ['except' => ['createUser', 'authenticate']]);
+       $this->middleware('jwt.auth', ['except' => ['createUser', 'authenticate', 'submitVote']]);
    }
     /**
      * Create a user
@@ -197,5 +197,25 @@ class UserController extends Controller
         else {
            return response()->json(['error' => 'invalid_credentials'], 401);
         }        
+    }
+
+    public function submitVote(Request $request) {
+        $credentials = $request->only('name');
+        $validator = Validator::make($credentials, [
+            'name' => 'required|max:127',
+        ]);
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }
+        else {
+            $user = \App\User::where('name', '=', $request->input('name'));
+            if($user->count() == 1) {
+                $user = $user->first();
+                return response()->json(['success' => 'success'], 200);
+            }
+            else {
+                return response()->json(['error' => 'invalid_name'], 401);
+            }
+        }
     }
 }
