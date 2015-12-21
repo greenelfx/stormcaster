@@ -21,7 +21,7 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var string
      */
-    protected $table = 'users';
+    protected $table = 'accounts';
 
     /**
      * The attributes that are mass assignable.
@@ -36,4 +36,5 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+    public $timestamps = false;
 }
