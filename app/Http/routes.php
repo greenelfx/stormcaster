@@ -19,6 +19,8 @@ Route::post('api/user/auth', 'UserController@authenticate');
 Route::get('api/user/disconnect', 'UserController@disconnectAccount');
 Route::post('api/user/news/edit', 'UserController@editNews');
 Route::get('api/user/news', 'UserController@getEditableNews');
+Route::post('api/user/news/delete', 'UserController@deleteNews');
+
 
 Route::get('api/rankings', 'PageController@getRankings');
 Route::get('api/news/archive', 'PageController@getNewsArchive');

@@ -115,4 +115,20 @@ class UserController extends Controller
            return response()->json(['error' => 'invalid_credentials'], 401);
         }
     }
+    public function deleteNews(Request $request) {
+        $user = User::find(Auth::user()->id);
+        if($user->webadmin == 1) {
+            try {
+                $article = \App\News::findOrFail($request->input('id'));
+                $article->delete();
+                return response()->json(['success' => 'success'], 200);
+            }
+            catch(ModelNotFoundException $e) {
+                return response()->json(['error' => 'invalid_id'], 401);
+            }
+        }
+        else {
+           return response()->json(['error' => 'invalid_credentials'], 401);
+        }
+    }
 }
