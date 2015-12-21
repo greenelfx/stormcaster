@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PageController extends Controller
 {
@@ -24,7 +25,17 @@ class PageController extends Controller
     *
     * @return Response
     */
-    public function getNews() {
+    public function getNewsArchive() {
         return \App\News::all();
+    }
+
+    public function getNewsArticle(Request $request) {
+        try {
+            $article = \App\News::findOrFail($request->route('id'));
+            return $article->first();
+        }
+        catch(ModelNotFoundException $e) {
+            return response()->json(['error' => 'invalid_id'], 401);
+        }
     }
 }

@@ -17,6 +17,9 @@ Route::get('/', function () {
 Route::post('api/user/create', 'UserController@createUser');
 Route::post('api/user/auth', 'UserController@authenticate');
 Route::get('api/user/disconnect', 'UserController@disconnectAccount');
+Route::post('api/user/news/edit', 'UserController@editNews');
+Route::get('api/user/news', 'UserController@getEditableNews');
 
 Route::get('api/rankings', 'PageController@getRankings');
-Route::get('api/news', 'PageController@getNews');
+Route::get('api/news/archive', 'PageController@getNewsArchive');
+Route::get('api/news/{id}', 'PageController@getNewsArticle');
