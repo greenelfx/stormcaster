@@ -16,3 +16,7 @@ Route::get('/', function () {
 });
 Route::post('api/user/create', 'UserController@createUser');
 Route::post('api/user/auth', 'UserController@authenticate');
+Route::get('api/user/disconnect', 'UserController@disconnectAccount');
+
+Route::get('api/rankings', 'PageController@getRankings');
+Route::get('api/news', 'PageController@getNews');

@@ -8,9 +8,16 @@ use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
 use Validator;
-
+use Auth;
 class UserController extends Controller
 {
+    public function __construct() 
+    {
+       // Apply the jwt.auth middleware to all methods in this controller
+       // except for the authenticate method. We don't want to prevent
+       // the user from retrieving their token if they don't already have it
+       $this->middleware('jwt.auth', ['except' => ['createUser', 'authenticate']]);
+   }
     /**
      * Create a user
      *
@@ -60,5 +67,10 @@ class UserController extends Controller
             }
             return response()->json(['error' => 'invalid_credentials'], 401);
         }
+    }
+    public function disconnectAccount(Request $request) {
+        $user = User::find(Auth::user()->id);
+        $user->loggedin = 0;
+        return "true";
     }
 }
