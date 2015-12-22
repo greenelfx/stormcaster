@@ -36,7 +36,10 @@ class PageController extends Controller
     */
     public function getNewsArticle(Request $request) {
         try {
-            $article = \App\News::findOrFail($request->route('id'));
+            $path = explode("/", $request->path());
+            $id = $path[count($path)-1];
+            $article = \App\News::findOrFail($id);
+
             return $article->first();
         }
         catch(ModelNotFoundException $e) {

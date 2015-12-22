@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Validator;
 use Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Response as IlluminateResponse;
 
 class UserController extends Controller
 {

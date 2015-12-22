@@ -65,7 +65,7 @@ a:focus {
             <div class="content">
                 <div class="title">welcome to <span style="font-weight:300;">stormcaster</span></div>
                 <div class="description">the <span style="font-weight:300;">next generation</span> of MapleStory web apps</div>
-                <div class="docs"><a href="#">&laquo; documentation &raquo;</a></div>
+                <div class="docs"><a href="https://github.com/greenelfx/stormcaster/wiki/Documentation">&laquo; documentation &raquo;</a></div>
             </div>
         </div>
     </body>
