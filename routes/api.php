@@ -17,12 +17,12 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // })->middleware('auth:api');
 
-Route::get('/rankings', 'PageController@getRankings');
-Route::get('/news/all', 'PageController@getNewsArchive');
-Route::get('/news/{id}', 'PageController@getNewsArticle');
+Route::get('rankings', 'PageController@getRankings');
+Route::get('news/all', 'PageController@getNewsArchive');
+Route::get('news/{id}', 'PageController@getNewsArticle');
 
-Route::post('/user/register', 'AuthController@register');
-Route::post('/user/auth', 'AuthController@authenticate');
+Route::post('user/register', 'AuthController@register');
+Route::post('user/auth', 'AuthController@authenticate');
 
 Route::group(array('prefix' => 'user'), function() {
 	Route::get('disconnect', 'UsersController@disconnectAccount');
