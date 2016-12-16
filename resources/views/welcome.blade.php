@@ -1,71 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <title>stormcaster  |  welcome</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link href="https://fonts.googleapis.com/css?family=Lato:100,300" rel="stylesheet" type="text/css">
+        <title>stormcaster</title>
 
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+
+        <!-- Styles -->
         <style>
             html, body {
-                height: 100%;
-            }
-
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                display: table;
+                background-color: #fff;
+                color: #636b6f;
+                font-family: 'Raleway', sans-serif;
                 font-weight: 100;
-                font-family: 'Lato';
+                height: 100vh;
+                margin: 0;
             }
 
-            .container {
-                text-align: center;
-                display: table-cell;
-                vertical-align: middle;
+            .full-height {
+                height: 100vh;
+            }
+
+            .flex-center {
+                align-items: center;
+                display: flex;
+                justify-content: center;
+            }
+
+            .position-ref {
+                position: relative;
+            }
+
+            .top-right {
+                position: absolute;
+                right: 10px;
+                top: 18px;
             }
 
             .content {
                 text-align: center;
-                display: inline-block;
             }
 
             .title {
-                font-size: 65px;
+                font-size: 84px;
             }
-            .description, .docs {
-                font-size: 30px;
+            .m-b-md {
+                margin-bottom: 30px;
             }
-            a {
-  background-color: transparent;
-  font-weight: 300;
-}
-a:active,
-a:hover {
-  outline: 0;
-}
-a {
-  color: #337ab7;
-  text-decoration: none;
-}
-a:hover,
-a:focus {
-  color: #23527c;
-  text-decoration: underline;
-}
-a:focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
         </style>
     </head>
     <body>
-        <div class="container">
+        <div class="flex-center position-ref full-height">
             <div class="content">
-                <div class="title">welcome to <span style="font-weight:300;">stormcaster</span></div>
-                <div class="description">the <span style="font-weight:300;">next generation</span> of MapleStory web apps</div>
-                <div class="docs"><a href="https://github.com/greenelfx/stormcaster/wiki/Documentation">&laquo; documentation &raquo;</a></div>
+                <div class="title m-b-md">
+                    stormcaster
+                </div>
             </div>
         </div>
     </body>
