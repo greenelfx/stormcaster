@@ -10,6 +10,13 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
+    * The table associated with Users.
+    *
+    * @var string
+    */
+    protected $table = 'accounts';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
