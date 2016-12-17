@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\News;
 use App\Models\Character;
+use App\Models\User;
 
 class PageController extends Controller
 {
@@ -44,5 +45,14 @@ class PageController extends Controller
         catch(ModelNotFoundException $e) {
             return response()->json(['error' => 'invalid_id'], 401);
         }
+    }
+
+    /**
+    * Get the online count
+    *
+    * @return count of online accounts
+    */
+    public function getOnlineCount() {
+    	return ['count' => User::where('loggedin', 1)->count()];
     }
 }

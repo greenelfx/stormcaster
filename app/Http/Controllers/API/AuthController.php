@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\User;
 use Auth;
 use JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
 use Hash;
 
 class AuthController extends Controller
