@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\User;
-use App\Models\News;
+use App\Models\Post;
 use Auth;
 use JWTAuth;
 use Hash;
@@ -72,24 +72,23 @@ class AdminController extends Controller
         }
     }
     /**
-     * Create a news article
+     * Create a post
      *
      * @param  Request  $request
      * @return Response
      */
-    public function createNews(Request $request) {
+    public function createPost(Request $request) {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string',
-            'type'   => 'required|string',
+            'type'   => 'required|integer|between:0,2',
             'content' => 'required'
         ]);
         if ($validator->fails()) {
             return $validator->errors()->all();
         }
         else {
-            $article = new News;
+            $article = new Post;
             $article->author = Auth::user()->name;
-            $article->date = time();
             $article->title = $request->input('title');
             $article->type = $request->input('type');
             $article->content = $request->input('content');

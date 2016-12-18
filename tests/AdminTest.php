@@ -23,7 +23,7 @@ class AdminTest extends TestCase
     }
 
     /**
-     * Test that account disconnect works
+     * Test that admin middleware blocks unauthorized users
      *
      * @return void
     */
@@ -32,8 +32,34 @@ class AdminTest extends TestCase
         $this->get('api/admin/numAccounts', ['HTTP_Authorization' => 'Bearer: ' . $this->getToken(0)])
             ->see('Unauthorized.');
     }
+
+    /**
+     * Test that admin middleware permits authorized users
+     *
+     * @return void
+    */
     public function testAuthorizedMiddleware() {
          $this->get('api/admin/numAccounts', ['HTTP_Authorization' => 'Bearer: ' . $this->getToken(1)])
             ->dontSee('Unauthorized.');
+    }
+
+    /**
+     * Test News CRUD
+     *
+     * @return void
+    */
+    public function testPostCRUD() {
+        $token = $this->getToken(1);
+        $title = str_random(10);
+        $content = str_random(200);
+        $type = rand(0, 2);
+        $this->post('api/admin/post/create', [], ['HTTP_Authorization' => 'Bearer: ' . $token])
+            ->see('["The title field is required.","The type field is required.","The content field is required."]');
+        $this->post('api/admin/post/create', ["title" => $title, "type" => $type, "content" => $content], ['HTTP_Authorization' => 'Bearer: ' . $token]);
+        $this->seeInDatabase('posts', [
+            'title' => $title,
+            'type' => $type,
+            'content' => $content,
+        ]);
     }
 }

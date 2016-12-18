@@ -21,6 +21,7 @@ Route::group(array('prefix' => 'user'), function() {
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['jwt.auth', 'checkadmin']], function() {
-	Route::get('news/edit', 'AdminController@editNews');
+	Route::post('news/edit', 'AdminController@editNews');
+	Route::post('post/create', 'AdminController@createPost');
 	Route::get('numAccounts', 'AdminController@getNumAccounts');
 });
