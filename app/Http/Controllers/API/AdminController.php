@@ -27,27 +27,27 @@ class AdminController extends Controller
 
 
     /**
-     * Update a news article
+     * Update a post
      *
      * @param  Request  $request
      * @return Response
      */
-    public function editNews(Request $request) {
+    public function editPost(Request $request) {
         try {
-            $article = News::findOrFail($request->input('id'));
+            $post = Post::findOrFail($request->input('id'));
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string',
-                'type'   => 'required|string',
+                'type'   => 'required|integer|between:0,2',
                 'content' => 'required'
             ]);
             if ($validator->fails()) {
                 return $validator->errors()->all();
             }
             else {
-                $article->title = $request->input('title');
-                $article->type = $request->input('type');
-                $article->content = $request->input('content');
-                $article->save();
+                $post->title = $request->input('title');
+                $post->type = $request->input('type');
+                $post->content = $request->input('content');
+                $post->save();
                 return response()->json(['success' => 'success'], 200);
             }
         }
@@ -56,15 +56,15 @@ class AdminController extends Controller
         }
     }
     /**
-     * Delete a news article
+     * Delete a post
      *
      * @param  Request  $request
      * @return Response
      */
-    public function deleteNews(Request $request) {
+    public function deletePost(Request $request) {
         try {
-            $article = News::findOrFail($request->input('id'));
-            $article->delete();
+            $post = Post::findOrFail($request->input('id'));
+            $post->delete();
             return response()->json(['success' => 'success'], 200);
         }
         catch(ModelNotFoundException $e) {
@@ -87,12 +87,12 @@ class AdminController extends Controller
             return $validator->errors()->all();
         }
         else {
-            $article = new Post;
-            $article->author = Auth::user()->name;
-            $article->title = $request->input('title');
-            $article->type = $request->input('type');
-            $article->content = $request->input('content');
-            $article->save();
+            $post = new Post;
+            $post->author = Auth::user()->name;
+            $post->title = $request->input('title');
+            $post->type = $request->input('type');
+            $post->content = $request->input('content');
+            $post->save();
             return response()->json(['success' => 'success'], 200);
         }
     }
