@@ -1,5 +1,6 @@
 # stormcaster
 [![Build Status](https://travis-ci.org/greenelfx/stormcaster.svg)](https://travis-ci.org/greenelfx/stormcaster)
+[![StyleCI](https://styleci.io/repos/48382253/shield?branch=master)](https://styleci.io/repos/48382253)
 
 stormcaster is an API for MapleStory servers. This API can be used to rapidly build web apps using popular front end technologies such as Angular and React.
 
