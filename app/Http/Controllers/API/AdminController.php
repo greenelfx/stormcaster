@@ -34,25 +34,25 @@ class AdminController extends Controller
      */
     public function editPost(Request $request) {
         try {
-            $post = Post::findOrFail($request->input('id'));
+            $post = Post::findOrFail($request->id);
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string',
                 'type'   => 'required|integer|between:0,2',
                 'content' => 'required'
             ]);
             if ($validator->fails()) {
-                return $validator->errors()->all();
+                return ['message' => 'validation', 'errors' => $validator->errors()->all()];
             }
             else {
-                $post->title = $request->input('title');
-                $post->type = $request->input('type');
-                $post->content = $request->input('content');
+                $post->title = $request->title;
+                $post->type = $request->type;
+                $post->content = $request->content;
                 $post->save();
-                return response()->json(['success' => 'success'], 200);
+                return response()->json(['message' => 'success'], 200);
             }
         }
         catch(ModelNotFoundException $e) {
-            return response()->json(['error' => 'invalid_id'], 401);
+            return response()->json(['message' => 'invalid_id'], 401);
         }
     }
     /**
@@ -63,12 +63,12 @@ class AdminController extends Controller
      */
     public function deletePost(Request $request) {
         try {
-            $post = Post::findOrFail($request->input('id'));
+            $post = Post::findOrFail($request->id);
             $post->delete();
-            return response()->json(['success' => 'success'], 200);
+            return response()->json(['message' => 'success'], 200);
         }
         catch(ModelNotFoundException $e) {
-            return response()->json(['error' => 'invalid_id'], 401);
+            return response()->json(['message' => 'invalid_id'], 401);
         }
     }
     /**
@@ -84,16 +84,16 @@ class AdminController extends Controller
             'content' => 'required'
         ]);
         if ($validator->fails()) {
-            return $validator->errors()->all();
+            return ['message' => 'validation', 'errors' => $validator->errors()->all()];
         }
         else {
             $post = new Post;
             $post->author = Auth::user()->name;
-            $post->title = $request->input('title');
-            $post->type = $request->input('type');
-            $post->content = $request->input('content');
+            $post->title = $request->title;
+            $post->type = $request->type;
+            $post->content = $request->content;
             $post->save();
-            return response()->json(['success' => 'success'], 200);
+            return response()->json(['message' => 'success'], 200);
         }
     }
 

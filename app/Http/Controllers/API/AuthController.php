@@ -29,7 +29,7 @@ class AuthController extends Controller
             'email'    => 'required|email|unique:accounts',
         ]);
         if ($validator->fails()) {
-            return $validator->errors()->all();
+            return ['message' => 'validation', 'errors' => $validator->errors()->all()];
         }
         else {
             $user = new User;
@@ -40,7 +40,7 @@ class AuthController extends Controller
             $user->birthday = "1990-01-01";
             $user->save();
             $token = JWTAuth::fromUser($user,['exp' => strtotime('+1 year'), 'type' => $user->webadmin, 'user_id' => $user->id]);
-            return compact('token');
+            return ['message' => 'success', 'token' => $token];
         }
     }
     /**
@@ -57,7 +57,7 @@ class AuthController extends Controller
             'password'   => 'required',
         ]);
         if ($validator->fails()) {
-            return $validator->errors()->all();
+            return ['message' => 'validation', 'errors' => $validator->errors()->all()];
         }
         else {
             $loginfield = $request->input('loginfield');
@@ -66,9 +66,9 @@ class AuthController extends Controller
             if($user->count() == 1) {
                 $user = $user->first();
                 $token = JWTAuth::fromUser($user, ['type'=>$user->webadmin,'user_id'=> $user->id]);
-                return response()->json(compact('token'));
+                return ['message' => 'success', 'token' => $token];
             }
-            return response()->json(['error' => 'invalid_credentials'], 401);
+            return response()->json(['message' => 'invalid_credentials'], 401);
         }
     }
 }
