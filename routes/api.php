@@ -18,6 +18,7 @@ Route::post('user/auth', 'AuthController@authenticate');
 
 Route::group(array('prefix' => 'user'), function() {
 	Route::get('disconnect', 'UsersController@disconnectAccount');
+	Route::post('update', 'UsersController@updateAccount');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['jwt.auth', 'checkadmin']], function() {

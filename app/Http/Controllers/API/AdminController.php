@@ -43,18 +43,17 @@ class AdminController extends Controller
             if ($validator->fails()) {
                 return ['message' => 'validation', 'errors' => $validator->errors()->all()];
             }
-            else {
-                $post->title = $request->title;
-                $post->type = $request->type;
-                $post->content = $request->content;
-                $post->save();
-                return response()->json(['message' => 'success'], 200);
-            }
+            $post->title = $request->title;
+            $post->type = $request->type;
+            $post->content = $request->content;
+            $post->save();
+            return response()->json(['message' => 'success'], 200);
         }
         catch(ModelNotFoundException $e) {
             return response()->json(['message' => 'invalid_id'], 401);
         }
     }
+
     /**
      * Delete a post
      *
@@ -71,6 +70,7 @@ class AdminController extends Controller
             return response()->json(['message' => 'invalid_id'], 401);
         }
     }
+
     /**
      * Create a post
      *
@@ -86,15 +86,12 @@ class AdminController extends Controller
         if ($validator->fails()) {
             return ['message' => 'validation', 'errors' => $validator->errors()->all()];
         }
-        else {
-            $post = new Post;
-            $post->author = Auth::user()->name;
-            $post->title = $request->title;
-            $post->type = $request->type;
-            $post->content = $request->content;
-            $post->save();
-            return response()->json(['message' => 'success'], 200);
-        }
+        $post = new Post;
+        $post->author = Auth::user()->name;
+        $post->title = $request->title;
+        $post->type = $request->type;
+        $post->content = $request->content;
+        $post->save();
+        return response()->json(['message' => 'success'], 200);
     }
-
 }
