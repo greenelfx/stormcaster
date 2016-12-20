@@ -14,14 +14,6 @@ use Hash;
 
 class UsersController extends Controller
 {
-    public function __construct() 
-    {
-       // Apply the jwt.auth middleware to all methods in this controller
-       // except for the authenticate method. We don't want to prevent
-       // the user from retrieving their token if they don't already have it
-       $this->middleware('jwt.auth', ['except' => ['submitVote']]);
-    }
-
     /**
      * Disconnect a game account
      *
@@ -59,22 +51,5 @@ class UsersController extends Controller
         $user->site_password = Hash::make($request->new_password);
         $user->save();
         return response()->json(['message' => 'success'], 200);
-    }
-
-    public function submitVote(Request $request)
-    {
-        $credentials = $request->only('name');
-        $validator = Validator::make($credentials, [
-            'name' => 'required|max:127',
-        ]);
-        if ($validator->fails()) {
-            return $validator->errors()->all();
-        }
-        $user = User::where('name', '=', $request->input('name'));
-        if($user->count() == 1) {
-            $user = $user->first();
-            return response()->json(['success' => 'success'], 200);
-        }
-        return response()->json(['error' => 'invalid_name'], 401);
     }
 }

@@ -55,4 +55,21 @@ class PageController extends Controller
     public function getOnlineCount() {
     	return ['count' => User::where('loggedin', 1)->count()];
     }
+
+    public function submitVote(Request $request)
+    {
+        $credentials = $request->only('name');
+        $validator = Validator::make($credentials, [
+            'name' => 'required|max:127',
+        ]);
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }
+        $user = User::where('name', '=', $request->input('name'));
+        if($user->count() == 1) {
+            $user = $user->first();
+            return response()->json(['success' => 'success'], 200);
+        }
+        return response()->json(['error' => 'invalid_name'], 401);
+    }
 }

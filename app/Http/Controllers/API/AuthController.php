@@ -61,7 +61,7 @@ class AuthController extends Controller
         $loginfield = $request->loginfield;
         $field = filter_var($loginfield, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
         if (Auth::attempt([$field => $loginfield, 'password' => $request->password])) {
-            $token = JWTAuth::fromUser(Auth::user(), ['type'=>Auth::user()->webadmin,'user_id'=> Auth::user()->id]);
+            $token = JWTAuth::fromUser(Auth::user(), ['type' => Auth::user()->webadmin,'user_id' => Auth::user()->id]);
             return ['message' => 'success', 'token' => $token];
         }
         return response()->json(['message' => 'invalid_credentials'], 401);

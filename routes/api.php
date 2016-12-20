@@ -16,7 +16,7 @@ Route::get('news/{id}', 'PageController@getNewsArticle');
 Route::post('user/register', 'AuthController@register');
 Route::post('user/auth', 'AuthController@authenticate');
 
-Route::group(['prefix' => 'user'], function() {
+Route::group(['prefix' => 'user', 'middleware' => ['jwt.auth']], function() {
 	Route::get('disconnect', 'UsersController@disconnectAccount');
 	Route::post('update', 'UsersController@updateAccount');
 });
