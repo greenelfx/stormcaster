@@ -33,4 +33,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Override default password field to use site_password
+     *
+     * @return site_password
+     */
+    public function getAuthPassword() {
+        return $this->site_password;
+    }
 }

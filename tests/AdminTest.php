@@ -64,25 +64,25 @@ class AdminTest extends TestCase
         ]);
         $post = Post::where('title', $title)->where('content', $content)->first();
         $content = str_random(20);
-        $this->post('api/admin/post/edit', ["id" => $post->id, "title" => $title, "type" => $type, "content" => $content], ['HTTP_Authorization' => 'Bearer: ' . $token])
-            ->see('{"success":"success"}');
+        $this->post('api/admin/post/'.$post->id.'/edit', ["id" => $post->id, "title" => $title, "type" => $type, "content" => $content], ['HTTP_Authorization' => 'Bearer: ' . $token])
+            ->see('{"message":"success"}');
         $this->seeInDatabase('posts', [
             'title' => $title,
             'type' => $type,
             'content' => $content,
         ]);
-        $this->post('api/admin/post/edit', ["id" => $post->id + 1, "title" => $title, "type" => $type, "content" => $content], ['HTTP_Authorization' => 'Bearer: ' . $token])
-            ->see('{"error":"invalid_id"}');
-        $this->post('api/admin/post/edit', ["id" => $post->id], ['HTTP_Authorization' => 'Bearer: ' . $token])
+        $this->post('api/admin/post/'.$post->id.'/edit', ["id" => $post->id + 1, "title" => $title, "type" => $type, "content" => $content], ['HTTP_Authorization' => 'Bearer: ' . $token])
+            ->see('{"message":"invalid_id"}');
+        $this->post('api/admin/post/'.$post->id.'/edit', ["id" => $post->id], ['HTTP_Authorization' => 'Bearer: ' . $token])
             ->see('["The title field is required.","The type field is required.","The content field is required."]');
-        $this->post('api/admin/post/delete', ["id" => $post->id], ['HTTP_Authorization' => 'Bearer: ' . $token])
-            ->see('{"success":"success"}');
+        $this->post('api/admin/post/'.$post->id.'/delete', ["id" => $post->id], ['HTTP_Authorization' => 'Bearer: ' . $token])
+            ->see('{"message":"success"}');
         $this->notSeeInDatabase('posts', [
             'title' => $title,
             'type' => $type,
             'content' => $content,
         ]);
-        $this->post('api/admin/post/delete', ["id" => $post->id], ['HTTP_Authorization' => 'Bearer: ' . $token])
-            ->see('{"error":"invalid_id"}');
+        $this->post('api/admin/post/'.$post->id.'/delete', ["id" => $post->id], ['HTTP_Authorization' => 'Bearer: ' . $token])
+            ->see('{"message":"invalid_id"}');
     }
 }

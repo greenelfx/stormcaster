@@ -17,7 +17,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test that account disconnect works
+     * Test account disconnect
      *
      * @return void
     */
@@ -25,5 +25,25 @@ class UserTest extends TestCase
     {
         $this->get('api/user/disconnect', ['HTTP_Authorization' => 'Bearer: ' . $this->getToken()])
             ->see('{"status":"success","message":"Successfully disconnected account"}');
+    }
+
+    /**
+     * Test account disconnect
+     *
+     * @return void
+    */
+    public function testPasswordChange()
+    {
+        $faker = Faker\Factory::create();
+        $username = str_random(10);
+        $password = "hello1";
+        $rand_new_pass = str_random(12);
+        $email = $faker->email;
+        $response = $this->call('POST', 'api/user/register', ['password' => $password, 'email' => $email, 'verify_password' => $password, 'name' => $username]);
+        $token = json_decode($response->getContent(), true)['token'];
+        $this->post('api/user/update', [], ['HTTP_Authorization' => 'Bearer: ' . $token])
+            ->see('{"message":"validation","errors":["The password field is required.","The new password field is required.","The new verify password field is required."]}');
+        $this->post('api/user/update', ['password' => 'hello1', 'new_password' => $rand_new_pass, 'new_verify_password' => $rand_new_pass], ['HTTP_Authorization' => 'Bearer: ' . $token])
+            ->see('{"message":"success"}');
     }
 }

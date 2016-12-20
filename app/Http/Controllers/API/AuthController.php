@@ -24,25 +24,24 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:accounts|max:127',
-            'password' => 'required|min:6|max:12',
+            'password' => 'required|min:6',
             'verify_password'   => 'required|same:password',
             'email'    => 'required|email|unique:accounts',
         ]);
         if ($validator->fails()) {
-            return $validator->errors()->all();
+            return ['message' => 'validation', 'errors' => $validator->errors()->all()];
         }
-        else {
-            $user = new User;
-            $user->name = $request->name;
-            $user->password = sha1($request->password);
-            $user->site_password = Hash::make($request->password);
-            $user->email = $request->email;
-            $user->birthday = "1990-01-01";
-            $user->save();
-            $token = JWTAuth::fromUser($user,['exp' => strtotime('+1 year'), 'type' => $user->webadmin, 'user_id' => $user->id]);
-            return compact('token');
-        }
+        $user = new User;
+        $user->name = $request->name;
+        $user->password = sha1($request->password);
+        $user->site_password = Hash::make($request->password);
+        $user->email = $request->email;
+        $user->birthday = "1990-01-01";
+        $user->save();
+        $token = JWTAuth::fromUser($user,['exp' => strtotime('+1 year'), 'type' => $user->webadmin, 'user_id' => $user->id]);
+        return ['message' => 'success', 'token' => $token];
     }
+    
     /**
      * Authenticate a user
      *
@@ -57,18 +56,14 @@ class AuthController extends Controller
             'password'   => 'required',
         ]);
         if ($validator->fails()) {
-            return $validator->errors()->all();
+            return ['message' => 'validation', 'errors' => $validator->errors()->all()];
         }
-        else {
-            $loginfield = $request->input('loginfield');
-            $field = filter_var($loginfield, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
-            $user = User::where($field, '=', $loginfield)->where('password', '=', sha1($request->input('password')));
-            if($user->count() == 1) {
-                $user = $user->first();
-                $token = JWTAuth::fromUser($user, ['type'=>$user->webadmin,'user_id'=> $user->id]);
-                return response()->json(compact('token'));
-            }
-            return response()->json(['error' => 'invalid_credentials'], 401);
+        $loginfield = $request->loginfield;
+        $field = filter_var($loginfield, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+        if (Auth::attempt([$field => $loginfield, 'password' => $request->password])) {
+            $token = JWTAuth::fromUser(Auth::user(), ['type' => Auth::user()->webadmin,'user_id' => Auth::user()->id]);
+            return ['message' => 'success', 'token' => $token];
         }
+        return response()->json(['message' => 'invalid_credentials'], 401);
     }
 }
