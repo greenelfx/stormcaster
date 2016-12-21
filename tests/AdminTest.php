@@ -72,7 +72,7 @@ class AdminTest extends TestCase
             'content' => $content,
         ]);
         $this->post('api/admin/post/'.$post->id.'/edit', ["id" => $post->id + 1, "title" => $title, "type" => $type, "content" => $content], ['HTTP_Authorization' => 'Bearer: ' . $token])
-            ->see('{"message":"invalid_id"}');
+            ->see('{"message":"validation","errors":["The selected id is invalid."]}');
         $this->post('api/admin/post/'.$post->id.'/edit', ["id" => $post->id], ['HTTP_Authorization' => 'Bearer: ' . $token])
             ->see('["The title field is required.","The type field is required.","The content field is required."]');
         $this->post('api/admin/post/'.$post->id.'/delete', ["id" => $post->id], ['HTTP_Authorization' => 'Bearer: ' . $token])
@@ -83,6 +83,6 @@ class AdminTest extends TestCase
             'content' => $content,
         ]);
         $this->post('api/admin/post/'.$post->id.'/delete', ["id" => $post->id], ['HTTP_Authorization' => 'Bearer: ' . $token])
-            ->see('{"message":"invalid_id"}');
+            ->see('{"message":"validation","errors":["The selected id is invalid."]}');
     }
 }
