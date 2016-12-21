@@ -6,7 +6,7 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Models\News;
+use App\Models\Post;
 use App\Models\Character;
 use App\Models\User;
 
@@ -19,7 +19,7 @@ class PageController extends Controller
      */
     public function getRankings()
     {
-        $users = Character::where('gm', '<', 4)->orderBy('level', 'DESC')->paginate(10);
+        $users = Character::select('id', 'level', 'name', 'exp', 'job', 'fame', 'gm')->where('gm', '<', 4)->orderBy('level', 'DESC')->paginate(10);
         return $users;
     }
 
@@ -29,7 +29,7 @@ class PageController extends Controller
      * @return JSON of all articles
      */
     public function getNewsArchive() {
-        return News::all();
+        return ['message' => 'success', 'data' => Post::all()];
     }
 
     /**
@@ -37,14 +37,8 @@ class PageController extends Controller
      * @param id
      * @return JSON article
      */
-    public function getNewsArticle(Request $request) {
-        try {
-            $article = News::findOrFail($request->id);
-            return $article->first();
-        }
-        catch(ModelNotFoundException $e) {
-            return response()->json(['error' => 'invalid_id'], 401);
-        }
+    public function getNewsArticle(Request $request, Post $post) {
+        return ['message' => 'success', 'data' => $post->first()];
     }
 
     /**
