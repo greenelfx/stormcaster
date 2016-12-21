@@ -37,14 +37,8 @@ class PageController extends Controller
      * @param id
      * @return JSON article
      */
-    public function getNewsArticle(Request $request) {
-        try {
-            $article = Post::findOrFail($request->id);
-            return ['message' => 'success', 'data' => $article->first()];
-        }
-        catch(ModelNotFoundException $e) {
-            return response()->json(['message' => 'invalid_id'], 401);
-        }
+    public function getNewsArticle(Request $request, Post $post) {
+        return ['message' => 'success', 'data' => $post->first()];
     }
 
     /**
