@@ -29,7 +29,7 @@ class AuthController extends Controller
             'email'    => 'required|email|unique:accounts',
         ]);
         if ($validator->fails()) {
-            return ['message' => 'validation', 'errors' => $validator->errors()->all()];
+            return ['message' => 'validation', 'errors' => $validator->errors()];
         }
         $user = new User;
         $user->name = $request->name;
@@ -56,7 +56,7 @@ class AuthController extends Controller
             'password'   => 'required',
         ]);
         if ($validator->fails()) {
-            return ['message' => 'validation', 'errors' => $validator->errors()->all()];
+            return ['message' => 'validation', 'errors' => $validator->errors()];
         }
         $loginfield = $request->loginfield;
         $field = filter_var($loginfield, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
