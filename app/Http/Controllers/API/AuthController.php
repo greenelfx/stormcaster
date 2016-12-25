@@ -38,7 +38,7 @@ class AuthController extends Controller
         $user->email = $request->email;
         $user->birthday = "1990-01-01";
         $user->save();
-        $token = JWTAuth::fromUser($user,['exp' => strtotime('+1 year'), 'type' => $user->webadmin, 'user_id' => $user->id]);
+        $token = JWTAuth::fromUser($user,['exp' => strtotime('+1 year'), 'type' => $user->webadmin, 'user_id' => $user->id, 'user_name' => $user->name]);
         return ['message' => 'success', 'token' => $token];
     }
     
@@ -61,7 +61,7 @@ class AuthController extends Controller
         $loginfield = $request->loginfield;
         $field = filter_var($loginfield, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
         if (Auth::attempt([$field => $loginfield, 'password' => $request->password])) {
-            $token = JWTAuth::fromUser(Auth::user(), ['type' => Auth::user()->webadmin,'user_id' => Auth::user()->id]);
+            $token = JWTAuth::fromUser(Auth::user(), ['type' => Auth::user()->webadmin,'user_id' => Auth::user()->id, 'user_name' => Auth::user()->name]);
             return ['message' => 'success', 'token' => $token];
         }
         return response()->json(['message' => 'invalid_credentials'], 401);
