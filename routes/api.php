@@ -10,8 +10,9 @@ use Illuminate\Http\Request;
 
 Route::get('rankings', 'PageController@getRankings');
 Route::get('online', 'PageController@getOnlineCount');
-Route::get('news/all', 'PageController@getNewsArchive');
-Route::get('news/{id}', 'PageController@getNewsArticle');
+Route::get('posts/all', 'PageController@getNewsArchive');
+Route::get('posts/recent', 'PageController@getRecentPosts');
+Route::get('posts/{post}', 'PageController@getNewsArticle');
 
 Route::post('user/register', 'AuthController@register');
 Route::post('user/auth', 'AuthController@authenticate');
