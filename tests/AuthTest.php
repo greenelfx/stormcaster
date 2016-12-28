@@ -22,17 +22,17 @@ class AuthTest extends TestCase
             ->seeJsonEquals([
                 "message" => "validation",
                 "errors" => [
-                    "The name field is required.",
-                    "The password field is required.",
-                    "The verify password field is required.",
-                    "The email field is required.",
+                    "name" => ["The name field is required."],
+                    "password" => ["The password field is required."],
+                    "verify_password" => ["The verify password field is required."],
+                    "email" => ["The email field is required."],
                 ]
             ]);
         $this->post('api/user/register', ['password' => $password, 'email' => $email, 'verify_password' => $password . "#", 'name' => $username])
             ->seeJsonEquals([
                 "message" => "validation",
                 "errors" => [
-                    "The verify password and password must match.",
+                    "verify_password" => ["The verify password and password must match."],
                 ]
             ]);
         $this->post('api/user/register', ['password' => $password, 'email' => $email, 'verify_password' => $password, 'name' => $username])
@@ -59,8 +59,8 @@ class AuthTest extends TestCase
             ->seeJsonEquals([
                 "message" => "validation",
                 "errors" => [
-                    "The loginfield field is required.",
-                    "The password field is required.",
+                    "loginfield" => ["The loginfield field is required."],
+                    "password" => ["The password field is required."],
                 ]
             ]);
         $this->post('api/user/auth', ['loginfield' => $email, 'password' => $password . "#"])

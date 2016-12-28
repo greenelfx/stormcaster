@@ -32,13 +32,19 @@ class PageController extends Controller
         return ['message' => 'success', 'data' => Post::all()];
     }
 
+    public function getRecentPosts() {
+        $news = Post::where('type', 0)->orderBy('created_at', 'desc')->take(5)->get()->toArray();
+        $events = Post::where('type', 1)->orderBy('created_at', 'desc')->take(5)->get()->toArray();
+        $blogs = Post::where('type', 2)->orderBy('created_at', 'desc')->take(5)->get()->toArray();
+        return ['message' => 'success', 'data' => ['news' => $news, 'events' => $events, 'blogs' => $blogs]];
+    }
     /**
      * Get a specific news article
      * @param id
      * @return JSON article
      */
     public function getNewsArticle(Request $request, Post $post) {
-        return ['message' => 'success', 'data' => $post->first()];
+        return ['message' => 'success', 'data' => $post];
     }
 
     /**

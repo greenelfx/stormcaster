@@ -41,7 +41,7 @@ class UsersController extends Controller
             'new_verify_password' => 'required|same:new_password',
         ]);
         if ($validator->fails()) {
-            return ['message' => 'validation', 'errors' => $validator->errors()->all()];
+            return ['message' => 'validation', 'errors' => $validator->errors()];
         }
         if (!Hash::check($request->password, Auth::user()->site_password)) {
             return ['message' => 'invalid_info'];
